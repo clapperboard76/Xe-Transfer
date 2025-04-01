@@ -1,5 +1,7 @@
 import SwiftUI
 import CryptoKit
+import Security
+import ServiceManagement
 
 extension Array {
     subscript(safe index: Index) -> Element? {
@@ -33,6 +35,37 @@ extension URL {
             return components[volumesIndex + 1]
         }
         return nil
+    }
+    
+    func requestWriteAccess() async throws -> Bool {
+        // First try without elevation
+        let testFile = self.appendingPathComponent(".xenon_test")
+        do {
+            try "test".write(to: testFile, atomically: true, encoding: .utf8)
+            try FileManager.default.removeItem(at: testFile)
+            return true
+        } catch {
+            // If write fails, show a helpful message to the user
+            let alert = NSAlert()
+            alert.messageText = "Permission Required"
+            alert.informativeText = """
+                This drive requires permission to write files. To fix this:
+                
+                1. Open Finder
+                2. Right-click on the drive in the sidebar
+                3. Select "Get Info"
+                4. Click the lock icon to make changes
+                5. Enter your password
+                6. Change permissions to "Read & Write"
+                7. Close the Info window
+                
+                After changing permissions, try the transfer again.
+                """
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+            return false
+        }
     }
 }
 
@@ -498,6 +531,7 @@ struct MatrixColumn: View {
 
 struct ContentView: View {
     @StateObject private var settings = Settings()
+    @StateObject private var transferHistory = TransferHistory()
     @State private var hasCompleted: Bool = false
     @State private var sourceFolders: [URL?] = [nil]
     @State private var destinationFolders: [URL] = [URL(fileURLWithPath: "/")]
@@ -509,6 +543,7 @@ struct ContentView: View {
     @State private var isHoveringSource: Bool = false
     @State private var isHoveringDestination: Bool = false
     @State private var showPreferences: Bool = false
+    @State private var showHistory: Bool = false
     @State private var isPaused: [Bool] = []
     
     var body: some View {
@@ -524,14 +559,25 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    Button(action: { showPreferences = true }) {
-                        Image(systemName: "gearshape.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.gray)
+                    HStack(spacing: 20) {
+                        Button(action: { showHistory = true }) {
+                            Image(systemName: "clock.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.gray)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        Button(action: { showPreferences = true }) {
+                            Image(systemName: "gearshape.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.gray)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
                     .padding(.trailing, 20)
                 }
                 
@@ -617,6 +663,9 @@ struct ContentView: View {
         .sheet(isPresented: $showPreferences) {
             PreferencesView(settings: settings)
         }
+        .sheet(isPresented: $showHistory) {
+            TransferHistoryView(history: transferHistory)
+        }
     }
     
     // MARK: - Fetch and Transfer Files
@@ -678,6 +727,7 @@ struct ContentView: View {
     private func startTransfer() {
         Swift.print("Starting transfer...")
         isTransferring = true
+        let startTime = Date()
         
         // Reset progress arrays and control states
         destinationProgress = Array(repeating: 0.0, count: destinationFolders.count)
@@ -689,148 +739,258 @@ struct ContentView: View {
         let transferQueue = DispatchQueue(label: "com.xenon.transfer", qos: .userInitiated)
         
         transferQueue.async {
-            // Calculate total size for each destination
-            var totalSizes: [Double] = Array(repeating: 0.0, count: self.destinationFolders.count)
-            for (destIndex, _) in self.destinationFolders.enumerated() {
-                for sourceFolder in self.sourceFolders {
-                    if let sourceURL = sourceFolder {
-                        let contents = self.fetchAllFiles(in: sourceURL)
-                        for fileURL in contents {
-                            do {
-                                let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
-                                if let fileSize = fileAttributes[.size] as? Double {
-                                    totalSizes[destIndex] += fileSize
-                                }
-                            } catch {
-                                Swift.print("Error fetching file attributes for \(fileURL.lastPathComponent): \(error.localizedDescription)")
+            Task {
+                // Check permissions for all destination folders first
+                var destinationErrors: [String] = []
+                for (index, destinationFolder) in self.destinationFolders.enumerated() {
+                    // Test write permissions by attempting to create a temporary file
+                    let testFile = destinationFolder.appendingPathComponent(".xenon_test")
+                    do {
+                        // Try to write with elevated privileges if needed
+                        let hasAccess = try await destinationFolder.requestWriteAccess()
+                        if !hasAccess {
+                            let errorMessage = "Cannot write to destination folder: \(destinationFolder.path)\nError: Permission denied"
+                            Swift.print(errorMessage)
+                            destinationErrors.append(errorMessage)
+                            
+                            // Update UI to show error state
+                            DispatchQueue.main.async {
+                                self.destinationProgress[index] = -1 // Use -1 to indicate error state
                             }
+                        }
+                    } catch {
+                        let errorMessage = "Cannot write to destination folder: \(destinationFolder.path)\nError: \(error.localizedDescription)"
+                        Swift.print(errorMessage)
+                        destinationErrors.append(errorMessage)
+                        
+                        // Update UI to show error state
+                        DispatchQueue.main.async {
+                            self.destinationProgress[index] = -1 // Use -1 to indicate error state
                         }
                     }
                 }
                 
-                // Update initial progress
-                DispatchQueue.main.async {
-                    self.destinationProgress[destIndex] = 0.0
-                    self.estimatedTimeForFolder[destIndex] = 0.0
+                // If there are any permission errors, show alert and stop transfer
+                if !destinationErrors.isEmpty {
+                    DispatchQueue.main.async {
+                        self.isTransferring = false
+                        let alert = NSAlert()
+                        alert.messageText = "Permission Error"
+                        alert.informativeText = "Cannot access one or more destination folders:\n\n" + destinationErrors.joined(separator: "\n\n")
+                        alert.alertStyle = .warning
+                        alert.addButton(withTitle: "OK")
+                        alert.runModal()
+                    }
+                    return
                 }
-            }
-            
-            // Perform file transfers and compute checksums
-            for (destIndex, destinationFolder) in self.destinationFolders.enumerated() {
-                let startTime = Date()
-                var bytesTransferred: Double = 0.0
                 
-                // Generate unique checksum file name with timestamp
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
-                let timestamp = dateFormatter.string(from: Date())
-                let checksumFileName = "checksum_\(timestamp).txt"
-                let checksumFileURL = destinationFolder.appendingPathComponent(checksumFileName)
+                // Calculate total size for each destination
+                var totalSizes: [Double] = Array(repeating: 0.0, count: self.destinationFolders.count)
+                for (destIndex, _) in self.destinationFolders.enumerated() {
+                    for sourceFolder in self.sourceFolders {
+                        if let sourceURL = sourceFolder {
+                            let contents = self.fetchAllFiles(in: sourceURL)
+                            for fileURL in contents {
+                                do {
+                                    let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+                                    if let fileSize = fileAttributes[.size] as? Double {
+                                        totalSizes[destIndex] += fileSize
+                                    }
+                                } catch {
+                                    Swift.print("Error fetching file attributes for \(fileURL.lastPathComponent): \(error.localizedDescription)")
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Update initial progress
+                    DispatchQueue.main.async {
+                        self.destinationProgress[destIndex] = 0.0
+                        self.estimatedTimeForFolder[destIndex] = 0.0
+                    }
+                }
                 
-                // Create the checksum file with project details
-                var projectDetails = ""
-                
-                // Add project details if they exist
-                if !settings.projectName.isEmpty {
-                    projectDetails += "Project Name: \(settings.projectName)\n"
-                }
-                if !settings.date.isEmpty {
-                    projectDetails += "Date: \(settings.date)\n"
-                }
-                if !settings.director.isEmpty {
-                    projectDetails += "Director: \(settings.director)\n"
-                }
-                if !settings.dop.isEmpty {
-                    projectDetails += "Director of Photography: \(settings.dop)\n"
-                }
-                if !settings.soundRecordist.isEmpty {
-                    projectDetails += "Sound Recordist: \(settings.soundRecordist)\n"
-                }
-                if !settings.dit.isEmpty {
-                    projectDetails += "DIT: \(settings.dit)\n"
-                }
-                if !settings.camera.isEmpty {
-                    projectDetails += "Camera: \(settings.camera)\n"
-                }
-                projectDetails += "Checksum Type: \(settings.selectedChecksumType.rawValue)\n"
-                projectDetails += "\n" // Add a blank line before checksum data
-                
-                // Write project details to the checksum file
-                try? projectDetails.write(to: checksumFileURL, atomically: true, encoding: .utf8)
-                
-                for sourceFolder in self.sourceFolders {
-                    if let sourceURL = sourceFolder {
-                        let contents = self.fetchAllFiles(in: sourceURL)
-                        for fileURL in contents {
-                            // Wait if transfer is paused
-                            while self.isPaused[destIndex] {
-                                Thread.sleep(forTimeInterval: 0.1)
+                // Perform file transfers and compute checksums
+                await withTaskGroup(of: Void.self) { group in
+                    for (destIndex, destinationFolder) in self.destinationFolders.enumerated() {
+                        group.addTask {
+                            let destStartTime = Date()
+                            var bytesTransferred: Double = 0.0
+                            var transferErrors: [String] = []
+                            
+                            // Generate unique checksum file name with timestamp
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
+                            let timestamp = dateFormatter.string(from: Date())
+                            let checksumFileName = "checksum_\(timestamp).txt"
+                            let checksumFileURL = destinationFolder.appendingPathComponent(checksumFileName)
+                            
+                            // Create the checksum file with project details
+                            var projectDetails = ""
+                            
+                            // Add project details if they exist
+                            if !settings.projectName.isEmpty {
+                                projectDetails += "Project Name: \(settings.projectName)\n"
+                            }
+                            if !settings.date.isEmpty {
+                                projectDetails += "Date: \(settings.date)\n"
+                            }
+                            if !settings.director.isEmpty {
+                                projectDetails += "Director: \(settings.director)\n"
+                            }
+                            if !settings.dop.isEmpty {
+                                projectDetails += "Director of Photography: \(settings.dop)\n"
+                            }
+                            if !settings.soundRecordist.isEmpty {
+                                projectDetails += "Sound Recordist: \(settings.soundRecordist)\n"
+                            }
+                            if !settings.dit.isEmpty {
+                                projectDetails += "DIT: \(settings.dit)\n"
+                            }
+                            if !settings.camera.isEmpty {
+                                projectDetails += "Camera: \(settings.camera)\n"
+                            }
+                            projectDetails += "Checksum Type: \(settings.selectedChecksumType.rawValue)\n"
+                            projectDetails += "\n" // Add a blank line before checksum data
+                            
+                            // Write project details to the checksum file
+                            do {
+                                try projectDetails.write(to: checksumFileURL, atomically: true, encoding: .utf8)
+                            } catch {
+                                let errorMessage = "Failed to create checksum file at \(checksumFileURL.path): \(error.localizedDescription)"
+                                Swift.print(errorMessage)
+                                transferErrors.append(errorMessage)
                             }
                             
-                            do {
-                                let relativePath = fileURL.path.replacingOccurrences(of: sourceURL.path, with: "")
-                                let destinationURL = destinationFolder.appendingPathComponent(relativePath)
-                                
-                                // Ensure subdirectories exist
-                                let destinationSubdirectory = destinationURL.deletingLastPathComponent()
-                                if !FileManager.default.fileExists(atPath: destinationSubdirectory.path) {
-                                    try FileManager.default.createDirectory(at: destinationSubdirectory, withIntermediateDirectories: true)
-                                }
-                                
-                                // Copy the file to destination
-                                if FileManager.default.fileExists(atPath: destinationURL.path) {
-                                    try FileManager.default.removeItem(at: destinationURL)
-                                }
-                                try FileManager.default.copyItem(at: fileURL, to: destinationURL)
-                                
-                                // Update progress
-                                let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
-                                if let fileSize = fileAttributes[.size] as? Double {
-                                    bytesTransferred += fileSize
-                                    let progress = bytesTransferred / totalSizes[destIndex]
-                                    let elapsedTime = Date().timeIntervalSince(startTime)
-                                    let bytesPerSecond = elapsedTime > 0 ? bytesTransferred / elapsedTime : 0
-                                    let remainingBytes = totalSizes[destIndex] - bytesTransferred
-                                    let remainingSeconds = bytesPerSecond > 0 ? remainingBytes / bytesPerSecond : 0
-                                    
-                                    DispatchQueue.main.async {
-                                        self.destinationProgress[destIndex] = progress
-                                        self.estimatedTimeForFolder[destIndex] = remainingSeconds
+                            for sourceFolder in self.sourceFolders {
+                                if let sourceURL = sourceFolder {
+                                    let contents = self.fetchAllFiles(in: sourceURL)
+                                    for fileURL in contents {
+                                        // Wait if transfer is paused
+                                        while self.isPaused[destIndex] {
+                                            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+                                        }
+                                        
+                                        do {
+                                            let relativePath = fileURL.path.replacingOccurrences(of: sourceURL.path, with: "")
+                                            let destinationURL = destinationFolder.appendingPathComponent(relativePath)
+                                            
+                                            // Ensure subdirectories exist
+                                            let destinationSubdirectory = destinationURL.deletingLastPathComponent()
+                                            if !FileManager.default.fileExists(atPath: destinationSubdirectory.path) {
+                                                try FileManager.default.createDirectory(at: destinationSubdirectory, withIntermediateDirectories: true)
+                                            }
+                                            
+                                            // Copy the file
+                                            try FileManager.default.copyItem(at: fileURL, to: destinationURL)
+                                            
+                                            // Verify the file was actually copied
+                                            if !FileManager.default.fileExists(atPath: destinationURL.path) {
+                                                throw NSError(domain: "com.xenon.transfer", code: -1, userInfo: [NSLocalizedDescriptionKey: "File copy verification failed"])
+                                            }
+                                            
+                                            // Update progress
+                                            let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+                                            if let fileSize = fileAttributes[.size] as? Double {
+                                                bytesTransferred += fileSize
+                                                let progress = bytesTransferred / totalSizes[destIndex]
+                                                let elapsedTime = Date().timeIntervalSince(destStartTime)
+                                                let bytesPerSecond = elapsedTime > 0 ? bytesTransferred / elapsedTime : 0
+                                                let remainingBytes = totalSizes[destIndex] - bytesTransferred
+                                                let remainingSeconds = bytesPerSecond > 0 ? remainingBytes / bytesPerSecond : 0
+                                                
+                                                await MainActor.run {
+                                                    self.destinationProgress[destIndex] = progress
+                                                    self.estimatedTimeForFolder[destIndex] = remainingSeconds
+                                                }
+                                            }
+                                            
+                                            // Compute checksum
+                                            let checksum = try self.computeChecksum(for: fileURL)
+                                            
+                                            // Append checksum to checksum file
+                                            let checksumText = "\(relativePath): \(checksum) - Transfer Success\n"
+                                            if let handle = try? FileHandle(forWritingTo: checksumFileURL) {
+                                                handle.seekToEndOfFile()
+                                                if let checksumData = checksumText.data(using: .utf8) {
+                                                    handle.write(checksumData)
+                                                }
+                                                handle.closeFile()
+                                            }
+                                        } catch {
+                                            let errorMessage = "Error transferring file \(fileURL.lastPathComponent): \(error.localizedDescription)"
+                                            Swift.print(errorMessage)
+                                            transferErrors.append(errorMessage)
+                                        }
                                     }
                                 }
-                                
-                                // Compute checksum
-                                let checksum = try self.computeChecksum(for: fileURL)
-                                
-                                // Append checksum to checksum file
-                                let checksumText = "\(relativePath): \(checksum) - Transfer Success\n"
-                                if let handle = try? FileHandle(forWritingTo: checksumFileURL) {
-                                    handle.seekToEndOfFile()
-                                    if let checksumData = checksumText.data(using: .utf8) {
-                                        handle.write(checksumData)
-                                    }
-                                    handle.closeFile()
+                            }
+                            
+                            // If there were any transfer errors for this destination, mark it as failed
+                            if !transferErrors.isEmpty {
+                                await MainActor.run {
+                                    self.destinationProgress[destIndex] = -1 // Use -1 to indicate error state
                                 }
-                            } catch {
-                                Swift.print("Error transferring file \(fileURL.lastPathComponent): \(error.localizedDescription)")
                             }
                         }
                     }
                 }
-            }
-            
-            // Mark transfer as complete
-            DispatchQueue.main.async {
-                // Ensure all progress bars reach 100%
-                for (index, _) in self.destinationProgress.enumerated() {
-                    self.destinationProgress[index] = 1.0
-                }
                 
-                // Add a small delay to allow the progress bars to update visually
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.isTransferring = false  // Turn off the Matrix effect before showing the alert
-                    self.showCompletionAlert()
-                    Swift.print("Transfer completed successfully.")
+                // Check if any destinations had successful transfers
+                let successfulTransfers = self.destinationProgress.filter { $0 >= 0.9 }.count
+                
+                // Mark transfer as complete
+                DispatchQueue.main.async {
+                    // Ensure all progress bars reach 100% for successful transfers
+                    for (index, progress) in self.destinationProgress.enumerated() {
+                        if progress >= 0.9 {
+                            self.destinationProgress[index] = 1.0
+                        }
+                    }
+                    
+                    // Add a small delay to allow the progress bars to update visually
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.isTransferring = false  // Turn off the Matrix effect before showing the alert
+                        
+                        if successfulTransfers > 0 {
+                            // Create and add transfer record only for successful destinations
+                            let duration = Date().timeIntervalSince(startTime)
+                            let record = TransferRecord(
+                                id: UUID(),
+                                timestamp: Date(),
+                                sourceFolders: self.sourceFolders.compactMap { $0?.path },
+                                destinationFolders: self.destinationFolders.enumerated().compactMap { index, folder in
+                                    self.destinationProgress[index] >= 0.9 ? folder.path : nil
+                                },
+                                totalSize: totalSizes.enumerated().reduce(0) { sum, index in
+                                    self.destinationProgress[index.offset] >= 0.9 ? sum + index.element : sum
+                                },
+                                duration: duration,
+                                projectName: settings.projectName,
+                                date: settings.date,
+                                director: settings.director,
+                                dop: settings.dop,
+                                soundRecordist: settings.soundRecordist,
+                                dit: settings.dit,
+                                camera: settings.camera,
+                                checksumType: settings.selectedChecksumType.rawValue,
+                                checksumFile: "checksum_\(Date().formatted(date: .complete, time: .standard)).txt"
+                            )
+                            self.transferHistory.addRecord(record)
+                            
+                            self.showCompletionAlert()
+                            Swift.print("Transfer completed successfully for \(successfulTransfers) destination(s).")
+                        } else {
+                            // Show error alert if no successful transfers
+                            let alert = NSAlert()
+                            alert.messageText = "Transfer Failed"
+                            alert.informativeText = "No files were successfully transferred to any destination. Please check the permissions and try again."
+                            alert.alertStyle = .warning
+                            alert.addButton(withTitle: "OK")
+                            alert.runModal()
+                            Swift.print("Transfer failed for all destinations.")
+                        }
+                    }
                 }
             }
         }

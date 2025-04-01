@@ -23,13 +23,31 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D27C11B92D9B903A00B77954 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		D27C11BB2D9B903A00B77954 /* XenonHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XenonHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2D1B4CB2D9123A70046895F /* Xenon-Transfer v2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Xenon-Transfer v2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2D1B4DC2D9123A80046895F /* Xenon-Transfer v2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Xenon-Transfer v2Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2D1B4E62D9123A80046895F /* Xenon-Transfer v2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Xenon-Transfer v2UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		D27C11BC2D9B903A00B77954 /* XenonHelperTool */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = XenonHelperTool;
+			sourceTree = "<group>";
+		};
 		D2D1B4CD2D9123A70046895F /* Xenon-Transfer v2 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Xenon-Transfer v2";
@@ -48,6 +66,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D27C11B82D9B903A00B77954 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2D1B4C82D9123A70046895F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -78,6 +103,7 @@
 				D2D1B4CD2D9123A70046895F /* Xenon-Transfer v2 */,
 				D2D1B4DF2D9123A80046895F /* Xenon-Transfer v2Tests */,
 				D2D1B4E92D9123A80046895F /* Xenon-Transfer v2UITests */,
+				D27C11BC2D9B903A00B77954 /* XenonHelperTool */,
 				D2D1B4CC2D9123A70046895F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +114,7 @@
 				D2D1B4CB2D9123A70046895F /* Xenon-Transfer v2.app */,
 				D2D1B4DC2D9123A80046895F /* Xenon-Transfer v2Tests.xctest */,
 				D2D1B4E62D9123A80046895F /* Xenon-Transfer v2UITests.xctest */,
+				D27C11BB2D9B903A00B77954 /* XenonHelper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +122,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D27C11BA2D9B903A00B77954 /* XenonHelperTool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D27C11BF2D9B903A00B77954 /* Build configuration list for PBXNativeTarget "XenonHelperTool" */;
+			buildPhases = (
+				D27C11B72D9B903A00B77954 /* Sources */,
+				D27C11B82D9B903A00B77954 /* Frameworks */,
+				D27C11B92D9B903A00B77954 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D27C11BC2D9B903A00B77954 /* XenonHelperTool */,
+			);
+			name = XenonHelperTool;
+			packageProductDependencies = (
+			);
+			productName = XenonHelperTool;
+			productReference = D27C11BB2D9B903A00B77954 /* XenonHelper */;
+			productType = "com.apple.product-type.tool";
+		};
 		D2D1B4CA2D9123A70046895F /* Xenon-Transfer v2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D2D1B4F02D9123A80046895F /* Build configuration list for PBXNativeTarget "Xenon-Transfer v2" */;
@@ -173,6 +222,9 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					D27C11BA2D9B903A00B77954 = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					D2D1B4CA2D9123A70046895F = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -203,6 +255,7 @@
 				D2D1B4CA2D9123A70046895F /* Xenon-Transfer v2 */,
 				D2D1B4DB2D9123A80046895F /* Xenon-Transfer v2Tests */,
 				D2D1B4E52D9123A80046895F /* Xenon-Transfer v2UITests */,
+				D27C11BA2D9B903A00B77954 /* XenonHelperTool */,
 			);
 		};
 /* End PBXProject section */
@@ -232,6 +285,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D27C11B72D9B903A00B77954 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2D1B4C72D9123A70046895F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,6 +329,30 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		D27C11C02D9B903A00B77954 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RR9SSU85FD;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xenon.helper;
+				PRODUCT_NAME = XenonHelper;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D27C11C12D9B903A00B77954 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RR9SSU85FD;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xenon.helper;
+				PRODUCT_NAME = XenonHelper;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		D2D1B4EE2D9123A80046895F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -506,6 +590,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D27C11BF2D9B903A00B77954 /* Build configuration list for PBXNativeTarget "XenonHelperTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D27C11C02D9B903A00B77954 /* Debug */,
+				D27C11C12D9B903A00B77954 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D2D1B4C62D9123A70046895F /* Build configuration list for PBXProject "Xenon-Transfer v2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -1,10 +1,9 @@
 # Xcode
 .DS_Store
 xcuserdata/
-*.xcuserstate
-project.xcworkspace/
 *.xcscmblueprint
 *.xccheckout
+build/
 DerivedData/
 *.moved-aside
 *.pbxuser
@@ -15,6 +14,10 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
 
 # Swift Package Manager
 .build/

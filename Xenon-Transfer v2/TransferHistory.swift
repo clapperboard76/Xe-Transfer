@@ -102,10 +102,10 @@ struct TransferHistoryView: View {
                         Image(systemName: "trash")
                         Text("Clear History")
                     }
-                    .foregroundColor(.red)
+                    .foregroundColor(.gray)
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
-                    .background(Color.red.opacity(0.1))
+                    .background(Color.gray.opacity(0.1))
                 }
                 .buttonStyle(PlainButtonStyle())
                 
@@ -137,7 +137,7 @@ struct TransferHistoryView: View {
                     dismiss()
                 }) {
                     Label("Close", systemImage: "xmark.circle.fill")
-                        .foregroundColor(.red)
+                        .foregroundColor(.gray)
                 }
                 .keyboardShortcut(.escape, modifiers: [])
             }

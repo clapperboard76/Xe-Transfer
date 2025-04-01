@@ -87,6 +87,9 @@ struct SourceFolderSection: View {
                 
                 Button(action: { sourceFolders.append(nil) }) {
                     Image(systemName: "plus.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
                         .foregroundColor(.gray)
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -135,10 +138,7 @@ struct SourceFolderSection: View {
                                 showEjectAlert = true
                             }) {
                                 Image(systemName: "eject.circle.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 10, height: 10)
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(.gray)
                             }
                             .buttonStyle(PlainButtonStyle())
                             .accessibilityLabel("Eject drive \(folderURL.getVolumeName() ?? "")")
@@ -146,10 +146,7 @@ struct SourceFolderSection: View {
                         
                         Button(action: { removeSourceFolder(at: index) }) {
                             Image(systemName: "minus.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 10, height: 10)
-                                .foregroundColor(.red)
+                                .foregroundColor(.gray)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .accessibilityLabel("Remove source folder \(index + 1)")
@@ -256,6 +253,9 @@ struct DestinationFolderSection: View {
                     isPaused.append(false)
                 }) {
                     Image(systemName: "plus.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
                         .foregroundColor(.gray)
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -339,10 +339,7 @@ struct DestinationFolderSection: View {
                                 showEjectAlert = true
                             }) {
                                 Image(systemName: "eject.circle.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 10, height: 10)
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(.gray)
                             }
                             .buttonStyle(PlainButtonStyle())
                             .accessibilityLabel("Eject drive \(destinationFolders[index].getVolumeName() ?? "")")
@@ -350,10 +347,7 @@ struct DestinationFolderSection: View {
                         
                         Button(action: { removeDestinationFolder(at: index) }) {
                             Image(systemName: "minus.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 10, height: 10)
-                                .foregroundColor(.red)
+                                .foregroundColor(.gray)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .accessibilityLabel("Remove destination folder \(index + 1)")

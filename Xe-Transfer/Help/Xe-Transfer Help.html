@@ -66,9 +66,48 @@
         <li><strong>Multiple Source and Destination Support:</strong> Transfer files from multiple source folders to multiple destination folders in one operation</li>
         <li><strong>Smart File Handling:</strong> Automatically skips existing files that are identical to source files</li>
         <li><strong>Progress Tracking:</strong> Real-time progress updates with estimated time remaining</li>
-        <li><strong>Checksum Verification:</strong> Generates SHA-256 checksums for all transferred files</li>
+        <li><strong>Checksum Verification:</strong> Generates checksums for all transferred files</li>
         <li><strong>Detailed Transfer Summary:</strong> Shows number of files copied and skipped</li>
     </ul>
+    
+    <h2>Smart File Handling</h2>
+    <p>Xe-Transfer's smart file handling system provides intelligent file management during transfers:</p>
+    <ul>
+        <li><strong>File Comparison:</strong> Before copying, the app checks if a file already exists in the destination folder</li>
+        <li><strong>Size Verification:</strong> Compares file sizes to quickly identify identical files</li>
+        <li><strong>Automatic Skipping:</strong> Files that are identical to their destination counterparts are automatically skipped</li>
+        <li><strong>Transfer Summary:</strong> Shows how many files were copied and how many were skipped</li>
+    </ul>
+    <div class="tip">
+        <strong>Tip:</strong> Smart file handling saves time by avoiding unnecessary file copies while ensuring data integrity.
+    </div>
+    
+    <h2>Checksum Verification</h2>
+    <p>Xe-Transfer supports multiple checksum algorithms for file verification:</p>
+    <ul>
+        <li><strong>SHA-256 (Recommended):</strong> The default and most secure option, providing 256-bit hash values</li>
+        <li><strong>SHA-1:</strong> A 160-bit hash algorithm, suitable for basic verification</li>
+        <li><strong>MD5:</strong> A 128-bit hash algorithm, useful for quick file comparison</li>
+    </ul>
+    <p>After each transfer, Xe-Transfer creates a checksum file in each destination folder that includes:</p>
+    <ul>
+        <li>List of all transferred files</li>
+        <li>Checksum for each file using the selected algorithm</li>
+        <li>Timestamp of the transfer</li>
+    </ul>
+    <div class="note">
+        <strong>Note:</strong> While SHA-1 and MD5 are supported for compatibility, SHA-256 is recommended for its superior security.
+    </div>
+    
+    <h2>Project Settings</h2>
+    <p>Xe-Transfer allows you to customize your transfer experience through project settings:</p>
+    <ul>
+        <li><strong>Checksum Algorithm:</strong> Choose between SHA-256, SHA-1, or MD5</li>
+        <li><strong>Transfer Mode:</strong> Configure how files are handled during transfer</li>
+    </ul>
+    <div class="tip">
+        <strong>Tip:</strong> Save your preferred settings as a project to quickly apply them to future transfers.
+    </div>
     
     <h2>Transfer Controls</h2>
     <p>The transfer process includes:</p>
@@ -77,14 +116,6 @@
         <li>Estimated time remaining for each transfer</li>
         <li>Ability to cancel the transfer at any time</li>
         <li>Automatic creation of necessary subfolders</li>
-    </ul>
-    
-    <h2>Checksum File</h2>
-    <p>After each transfer, Xe-Transfer creates a checksum file in each destination folder that includes:</p>
-    <ul>
-        <li>List of all transferred files</li>
-        <li>SHA-256 checksum for each file</li>
-        <li>Timestamp of the transfer</li>
     </ul>
     
     <h2>Troubleshooting</h2>

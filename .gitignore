@@ -14,10 +14,19 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
+
+# Build products
+*.o
+*.link_file_list
 *.hmap
 *.ipa
 *.dSYM.zip
 *.dSYM
+
+# App specific
+*.app/
+*.dmg
+*.zip
 
 # Swift Package Manager
 .build/

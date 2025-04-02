@@ -15,7 +15,6 @@ struct Xe_TransferApp: App {
         .windowStyle(.hiddenTitleBar)
         .commands {
             CommandGroup(replacing: .newItem) { }
-            CommandGroup(replacing: .help) { }
         }
     }
 }
@@ -52,17 +51,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc private func showHelp() {
-        if let helpPath = Bundle.main.path(forResource: "Xe-Transfer Help", ofType: "html", inDirectory: "Help") {
-            let helpURL = URL(fileURLWithPath: helpPath)
-            NSWorkspace.shared.open(helpURL)
-        } else {
-            // Show error alert
-            let alert = NSAlert()
-            alert.messageText = "Help File Not Found"
-            alert.informativeText = "The help file could not be found. Please contact support."
-            alert.alertStyle = .warning
-            alert.addButton(withTitle: "OK")
-            alert.runModal()
+        print("Bundle path: \(Bundle.main.bundlePath)")
+        print("Resource path: \(Bundle.main.resourcePath ?? "nil")")
+        
+        // Try different possible paths for the help file
+        let possiblePaths = [
+            Bundle.main.path(forResource: "Xe-Transfer Help", ofType: "html", inDirectory: "Help"),
+            Bundle.main.path(forResource: "Xe-Transfer Help", ofType: "html"),
+            Bundle.main.bundlePath + "/Contents/Resources/Help/Xe-Transfer Help.html",
+            Bundle.main.bundlePath + "/Contents/Resources/Xe-Transfer Help.html"
+        ]
+        
+        for path in possiblePaths {
+            if let helpPath = path {
+                print("Found help file at: \(helpPath)")
+                let helpURL = URL(fileURLWithPath: helpPath)
+                NSWorkspace.shared.open(helpURL)
+                return
+            }
         }
+        
+        // If we get here, the help file wasn't found
+        print("Help file not found in any location")
+        let alert = NSAlert()
+        alert.messageText = "Help File Not Found"
+        alert.informativeText = "The help file could not be found. Please contact support."
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
 } 

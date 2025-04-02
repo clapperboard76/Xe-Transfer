@@ -39,5 +39,7 @@
         <key>NSAllowsArbitraryLoads</key>
         <true/>
     </dict>
+    <key>CFBundleHelpBookName</key>
+    <string>Xe-Transfer Help</string>
 </dict>
 </plist> 

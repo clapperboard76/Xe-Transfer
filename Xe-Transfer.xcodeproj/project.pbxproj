@@ -12,14 +12,14 @@
 			containerPortal = D2D1B4C32D9123A70046895F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D2D1B4CA2D9123A70046895F;
-			remoteInfo = "Xenon-Transfer v2";
+			remoteInfo = "Xe-Transfer";
 		};
 		D2D1B4E72D9123A80046895F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D2D1B4C32D9123A70046895F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D2D1B4CA2D9123A70046895F;
-			remoteInfo = "Xenon-Transfer v2";
+			remoteInfo = "Xe-Transfer";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -37,30 +37,25 @@
 
 /* Begin PBXFileReference section */
 		D27C11BB2D9B903A00B77954 /* XenonHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XenonHelper; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2D1B4CB2D9123A70046895F /* Xenon-Transfer v2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Xenon-Transfer v2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2D1B4DC2D9123A80046895F /* Xenon-Transfer v2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Xenon-Transfer v2Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2D1B4E62D9123A80046895F /* Xenon-Transfer v2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Xenon-Transfer v2UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2D1B4CB2D9123A70046895F /* Xe-Transfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Xe-Transfer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2D1B4DC2D9123A80046895F /* Xe-TransferTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Xe-TransferTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2D1B4E62D9123A80046895F /* Xe-TransferUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Xe-TransferUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D27C11BC2D9B903A00B77954 /* XenonHelperTool */ = {
+		D2D1B4CD2D9123A70046895F /* Xe-Transfer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = XenonHelperTool;
+			path = "Xe-Transfer";
 			sourceTree = "<group>";
 		};
-		D2D1B4CD2D9123A70046895F /* Xenon-Transfer v2 */ = {
+		D2D1B4DF2D9123A80046895F /* Xe-TransferTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Xenon-Transfer v2";
+			path = "Xe-TransferTests";
 			sourceTree = "<group>";
 		};
-		D2D1B4DF2D9123A80046895F /* Xenon-Transfer v2Tests */ = {
+		D2D1B4E92D9123A80046895F /* Xe-TransferUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Xenon-Transfer v2Tests";
-			sourceTree = "<group>";
-		};
-		D2D1B4E92D9123A80046895F /* Xenon-Transfer v2UITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Xenon-Transfer v2UITests";
+			path = "Xe-TransferUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -100,10 +95,9 @@
 		D2D1B4C22D9123A70046895F = {
 			isa = PBXGroup;
 			children = (
-				D2D1B4CD2D9123A70046895F /* Xenon-Transfer v2 */,
-				D2D1B4DF2D9123A80046895F /* Xenon-Transfer v2Tests */,
-				D2D1B4E92D9123A80046895F /* Xenon-Transfer v2UITests */,
-				D27C11BC2D9B903A00B77954 /* XenonHelperTool */,
+				D2D1B4CD2D9123A70046895F /* Xe-Transfer */,
+				D2D1B4DF2D9123A80046895F /* Xe-TransferTests */,
+				D2D1B4E92D9123A80046895F /* Xe-TransferUITests */,
 				D2D1B4CC2D9123A70046895F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -111,9 +105,9 @@
 		D2D1B4CC2D9123A70046895F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D2D1B4CB2D9123A70046895F /* Xenon-Transfer v2.app */,
-				D2D1B4DC2D9123A80046895F /* Xenon-Transfer v2Tests.xctest */,
-				D2D1B4E62D9123A80046895F /* Xenon-Transfer v2UITests.xctest */,
+				D2D1B4CB2D9123A70046895F /* Xe-Transfer.app */,
+				D2D1B4DC2D9123A80046895F /* Xe-TransferTests.xctest */,
+				D2D1B4E62D9123A80046895F /* Xe-TransferUITests.xctest */,
 				D27C11BB2D9B903A00B77954 /* XenonHelper */,
 			);
 			name = Products;
@@ -134,9 +128,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				D27C11BC2D9B903A00B77954 /* XenonHelperTool */,
-			);
 			name = XenonHelperTool;
 			packageProductDependencies = (
 			);
@@ -144,9 +135,9 @@
 			productReference = D27C11BB2D9B903A00B77954 /* XenonHelper */;
 			productType = "com.apple.product-type.tool";
 		};
-		D2D1B4CA2D9123A70046895F /* Xenon-Transfer v2 */ = {
+		D2D1B4CA2D9123A70046895F /* Xe-Transfer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D2D1B4F02D9123A80046895F /* Build configuration list for PBXNativeTarget "Xenon-Transfer v2" */;
+			buildConfigurationList = D2D1B4F02D9123A80046895F /* Build configuration list for PBXNativeTarget "Xe-Transfer" */;
 			buildPhases = (
 				D2D1B4C72D9123A70046895F /* Sources */,
 				D2D1B4C82D9123A70046895F /* Frameworks */,
@@ -157,18 +148,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D2D1B4CD2D9123A70046895F /* Xenon-Transfer v2 */,
+				D2D1B4CD2D9123A70046895F /* Xe-Transfer */,
 			);
-			name = "Xenon-Transfer v2";
+			name = "Xe-Transfer";
 			packageProductDependencies = (
 			);
-			productName = "Xenon-Transfer v2";
-			productReference = D2D1B4CB2D9123A70046895F /* Xenon-Transfer v2.app */;
+			productName = "Xe-Transfer";
+			productReference = D2D1B4CB2D9123A70046895F /* Xe-Transfer.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D2D1B4DB2D9123A80046895F /* Xenon-Transfer v2Tests */ = {
+		D2D1B4DB2D9123A80046895F /* Xe-TransferTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D2D1B4F32D9123A80046895F /* Build configuration list for PBXNativeTarget "Xenon-Transfer v2Tests" */;
+			buildConfigurationList = D2D1B4F32D9123A80046895F /* Build configuration list for PBXNativeTarget "Xe-TransferTests" */;
 			buildPhases = (
 				D2D1B4D82D9123A80046895F /* Sources */,
 				D2D1B4D92D9123A80046895F /* Frameworks */,
@@ -180,18 +171,18 @@
 				D2D1B4DE2D9123A80046895F /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				D2D1B4DF2D9123A80046895F /* Xenon-Transfer v2Tests */,
+				D2D1B4DF2D9123A80046895F /* Xe-TransferTests */,
 			);
-			name = "Xenon-Transfer v2Tests";
+			name = "Xe-TransferTests";
 			packageProductDependencies = (
 			);
-			productName = "Xenon-Transfer v2Tests";
-			productReference = D2D1B4DC2D9123A80046895F /* Xenon-Transfer v2Tests.xctest */;
+			productName = "Xe-TransferTests";
+			productReference = D2D1B4DC2D9123A80046895F /* Xe-TransferTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D2D1B4E52D9123A80046895F /* Xenon-Transfer v2UITests */ = {
+		D2D1B4E52D9123A80046895F /* Xe-TransferUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D2D1B4F62D9123A80046895F /* Build configuration list for PBXNativeTarget "Xenon-Transfer v2UITests" */;
+			buildConfigurationList = D2D1B4F62D9123A80046895F /* Build configuration list for PBXNativeTarget "Xe-TransferUITests" */;
 			buildPhases = (
 				D2D1B4E22D9123A80046895F /* Sources */,
 				D2D1B4E32D9123A80046895F /* Frameworks */,
@@ -203,13 +194,13 @@
 				D2D1B4E82D9123A80046895F /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				D2D1B4E92D9123A80046895F /* Xenon-Transfer v2UITests */,
+				D2D1B4E92D9123A80046895F /* Xe-TransferUITests */,
 			);
-			name = "Xenon-Transfer v2UITests";
+			name = "Xe-TransferUITests";
 			packageProductDependencies = (
 			);
-			productName = "Xenon-Transfer v2UITests";
-			productReference = D2D1B4E62D9123A80046895F /* Xenon-Transfer v2UITests.xctest */;
+			productName = "Xe-TransferUITests";
+			productReference = D2D1B4E62D9123A80046895F /* Xe-TransferUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -238,7 +229,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D2D1B4C62D9123A70046895F /* Build configuration list for PBXProject "Xenon-Transfer v2" */;
+			buildConfigurationList = D2D1B4C62D9123A70046895F /* Build configuration list for PBXProject "Xe-Transfer" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -252,9 +243,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D2D1B4CA2D9123A70046895F /* Xenon-Transfer v2 */,
-				D2D1B4DB2D9123A80046895F /* Xenon-Transfer v2Tests */,
-				D2D1B4E52D9123A80046895F /* Xenon-Transfer v2UITests */,
+				D2D1B4CA2D9123A70046895F /* Xe-Transfer */,
+				D2D1B4DB2D9123A80046895F /* Xe-TransferTests */,
+				D2D1B4E52D9123A80046895F /* Xe-TransferUITests */,
 				D27C11BA2D9B903A00B77954 /* XenonHelperTool */,
 			);
 		};
@@ -318,12 +309,12 @@
 /* Begin PBXTargetDependency section */
 		D2D1B4DE2D9123A80046895F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2D1B4CA2D9123A70046895F /* Xenon-Transfer v2 */;
+			target = D2D1B4CA2D9123A70046895F /* Xe-Transfer */;
 			targetProxy = D2D1B4DD2D9123A80046895F /* PBXContainerItemProxy */;
 		};
 		D2D1B4E82D9123A80046895F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2D1B4CA2D9123A70046895F /* Xenon-Transfer v2 */;
+			target = D2D1B4CA2D9123A70046895F /* Xe-Transfer */;
 			targetProxy = D2D1B4E72D9123A80046895F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -413,6 +404,7 @@
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -468,6 +460,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -476,12 +469,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Xenon-Transfer v2/Xenon_Transfer_v2.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Xe-Transfer/Xe_Transfer.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Xenon-Transfer v2/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Xe-Transfer/Preview Content\"";
 				DEVELOPMENT_TEAM = RR9SSU85FD;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -489,8 +484,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xenon-Transfer-v2";
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xe-Transfer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -502,12 +497,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Xenon-Transfer v2/Xenon_Transfer_v2.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Xe-Transfer/Xe_Transfer.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Xenon-Transfer v2/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Xe-Transfer/Preview Content\"";
 				DEVELOPMENT_TEAM = RR9SSU85FD;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -515,8 +512,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xenon-Transfer-v2";
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xe-Transfer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -532,11 +529,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xenon-Transfer-v2Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xe-TransferTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Xenon-Transfer v2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Xenon-Transfer v2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Xe-Transfer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Xe-Transfer";
 			};
 			name = Debug;
 		};
@@ -549,11 +546,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xenon-Transfer-v2Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xe-TransferTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Xenon-Transfer v2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Xenon-Transfer v2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Xe-Transfer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Xe-Transfer";
 			};
 			name = Release;
 		};
@@ -564,11 +561,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xenon-Transfer-v2UITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xe-TransferUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "Xenon-Transfer v2";
+				TEST_TARGET_NAME = "Xe-Transfer";
 			};
 			name = Debug;
 		};
@@ -579,11 +576,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xenon-Transfer-v2UITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Xenon-Post.Xe-TransferUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "Xenon-Transfer v2";
+				TEST_TARGET_NAME = "Xe-Transfer";
 			};
 			name = Release;
 		};
@@ -599,7 +596,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D2D1B4C62D9123A70046895F /* Build configuration list for PBXProject "Xenon-Transfer v2" */ = {
+		D2D1B4C62D9123A70046895F /* Build configuration list for PBXProject "Xe-Transfer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D2D1B4EE2D9123A80046895F /* Debug */,
@@ -608,7 +605,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D2D1B4F02D9123A80046895F /* Build configuration list for PBXNativeTarget "Xenon-Transfer v2" */ = {
+		D2D1B4F02D9123A80046895F /* Build configuration list for PBXNativeTarget "Xe-Transfer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D2D1B4F12D9123A80046895F /* Debug */,
@@ -617,7 +614,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D2D1B4F32D9123A80046895F /* Build configuration list for PBXNativeTarget "Xenon-Transfer v2Tests" */ = {
+		D2D1B4F32D9123A80046895F /* Build configuration list for PBXNativeTarget "Xe-TransferTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D2D1B4F42D9123A80046895F /* Debug */,
@@ -626,7 +623,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D2D1B4F62D9123A80046895F /* Build configuration list for PBXNativeTarget "Xenon-Transfer v2UITests" */ = {
+		D2D1B4F62D9123A80046895F /* Build configuration list for PBXNativeTarget "Xe-TransferUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D2D1B4F72D9123A80046895F /* Debug */,

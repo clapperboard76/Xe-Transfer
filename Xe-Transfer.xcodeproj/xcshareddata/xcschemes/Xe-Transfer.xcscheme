@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D2D1B4CA2D9123A70046895F"
-               BuildableName = "Xenon-Transfer v2.app"
-               BlueprintName = "Xenon-Transfer v2"
-               ReferencedContainer = "container:Xenon-Transfer v2.xcodeproj">
+               BuildableName = "Xe-Transfer.app"
+               BlueprintName = "Xe-Transfer"
+               ReferencedContainer = "container:Xe-Transfer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,9 +36,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D2D1B4DB2D9123A80046895F"
-               BuildableName = "Xenon-Transfer v2Tests.xctest"
-               BlueprintName = "Xenon-Transfer v2Tests"
-               ReferencedContainer = "container:Xenon-Transfer v2.xcodeproj">
+               BuildableName = "Xe-TransferTests.xctest"
+               BlueprintName = "Xe-TransferTests"
+               ReferencedContainer = "container:Xe-Transfer.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D2D1B4E52D9123A80046895F"
-               BuildableName = "Xenon-Transfer v2UITests.xctest"
-               BlueprintName = "Xenon-Transfer v2UITests"
-               ReferencedContainer = "container:Xenon-Transfer v2.xcodeproj">
+               BuildableName = "Xe-TransferUITests.xctest"
+               BlueprintName = "Xe-TransferUITests"
+               ReferencedContainer = "container:Xe-Transfer.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,9 +69,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D2D1B4CA2D9123A70046895F"
-            BuildableName = "Xenon-Transfer v2.app"
-            BlueprintName = "Xenon-Transfer v2"
-            ReferencedContainer = "container:Xenon-Transfer v2.xcodeproj">
+            BuildableName = "Xe-Transfer.app"
+            BlueprintName = "Xe-Transfer"
+            ReferencedContainer = "container:Xe-Transfer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -86,9 +86,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D2D1B4CA2D9123A70046895F"
-            BuildableName = "Xenon-Transfer v2.app"
-            BlueprintName = "Xenon-Transfer v2"
-            ReferencedContainer = "container:Xenon-Transfer v2.xcodeproj">
+            BuildableName = "Xe-Transfer.app"
+            BlueprintName = "Xe-Transfer"
+            ReferencedContainer = "container:Xe-Transfer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

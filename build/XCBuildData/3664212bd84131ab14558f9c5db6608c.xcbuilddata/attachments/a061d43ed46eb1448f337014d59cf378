@@ -1,0 +1,20 @@
+{
+  "" : {
+    "const-values" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xe-TransferUITests-master.swiftconstvalues",
+    "dependencies" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xe-TransferUITests-master.d",
+    "diagnostics" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xe-TransferUITests-master.dia",
+    "emit-module-dependencies" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xe-TransferUITests-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xe-TransferUITests-master-emit-module.dia",
+    "swift-dependencies" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xe-TransferUITests-master.swiftdeps"
+  },
+  "/Users/studioone/Xe-Transfer/Xe-TransferUITests/Xenon_Transfer_v2UITests.swift" : {
+    "index-unit-output-path" : "/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xenon_Transfer_v2UITests.o",
+    "llvm-bc" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xenon_Transfer_v2UITests.bc",
+    "object" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xenon_Transfer_v2UITests.o"
+  },
+  "/Users/studioone/Xe-Transfer/Xe-TransferUITests/Xenon_Transfer_v2UITestsLaunchTests.swift" : {
+    "index-unit-output-path" : "/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xenon_Transfer_v2UITestsLaunchTests.o",
+    "llvm-bc" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xenon_Transfer_v2UITestsLaunchTests.bc",
+    "object" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferUITests.build/Objects-normal/arm64/Xenon_Transfer_v2UITestsLaunchTests.o"
+  }
+}

@@ -1,0 +1,5 @@
+ extern const unsigned char Xe_TransferUITestsVersionString[];
+ extern const double Xe_TransferUITestsVersionNumber;
+
+ const unsigned char Xe_TransferUITestsVersionString[] __attribute__ ((used)) = "@(#)PROGRAM:Xe-TransferUITests  PROJECT:Xe-Transfer-1" "\n";
+ const double Xe_TransferUITestsVersionNumber __attribute__ ((used)) = (double)1.;

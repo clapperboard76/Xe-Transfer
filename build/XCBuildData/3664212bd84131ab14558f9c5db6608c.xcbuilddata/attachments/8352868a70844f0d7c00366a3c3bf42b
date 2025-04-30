@@ -1,0 +1,15 @@
+{
+  "" : {
+    "const-values" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xe-TransferTests-master.swiftconstvalues",
+    "dependencies" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xe-TransferTests-master.d",
+    "diagnostics" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xe-TransferTests-master.dia",
+    "emit-module-dependencies" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xe-TransferTests-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xe-TransferTests-master-emit-module.dia",
+    "swift-dependencies" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xe-TransferTests-master.swiftdeps"
+  },
+  "/Users/studioone/Xe-Transfer/Xe-TransferTests/Xenon_Transfer_v2Tests.swift" : {
+    "index-unit-output-path" : "/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xenon_Transfer_v2Tests.o",
+    "llvm-bc" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xenon_Transfer_v2Tests.bc",
+    "object" : "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-TransferTests.build/Objects-normal/arm64/Xenon_Transfer_v2Tests.o"
+  }
+}

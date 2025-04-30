@@ -1,0 +1,7 @@
+Target dependency graph (4 targets)
+Target 'XenonHelperTool' in project 'Xe-Transfer' (no dependencies)
+Target 'Xe-TransferUITests' in project 'Xe-Transfer'
+➜ Explicit dependency on target 'Xe-Transfer' in project 'Xe-Transfer'
+Target 'Xe-TransferTests' in project 'Xe-Transfer'
+➜ Explicit dependency on target 'Xe-Transfer' in project 'Xe-Transfer'
+Target 'Xe-Transfer' in project 'Xe-Transfer' (no dependencies)

@@ -1,0 +1,5 @@
+ extern const unsigned char XenonHelperVersionString[];
+ extern const double XenonHelperVersionNumber;
+
+ const unsigned char XenonHelperVersionString[] __attribute__ ((used)) = "@(#)PROGRAM:XenonHelper  PROJECT:Xe-Transfer-" "\n";
+ const double XenonHelperVersionNumber __attribute__ ((used)) = (double)0.;

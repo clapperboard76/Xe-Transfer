@@ -1,7 +1,7 @@
 version: "Apple Swift version 6.1 (swiftlang-6.1.0.110.21 clang-1700.0.13.3)"
 options: "f8bfdf67ee0ed19d774b54d29d3aaadfb04be8086cfa2e51330ffca2d8da5fc1"
-build_start_time: [1745986520, 575896000]
-build_end_time: [1745986525, 213050000]
+build_start_time: [1745987118, 330208000]
+build_end_time: [1745987123, 671182000]
 inputs:
   "/Users/studioone/Xe-Transfer/Xe-Transfer/ContentView.swift": [1745986501, 551021906]
   "/Users/studioone/Xe-Transfer/Xe-Transfer/FileTransferManager.swift": [1745979853, 324143477]
@@ -9,4 +9,4 @@ inputs:
   "/Users/studioone/Xe-Transfer/Xe-Transfer/Settings.swift": [1745979853, 400607244]
   "/Users/studioone/Xe-Transfer/Xe-Transfer/TransferHistory.swift": [1745979853, 331756312]
   "/Users/studioone/Xe-Transfer/Xe-Transfer/Xe_TransferApp.swift": [1745979853, 408109287]
-  "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-Transfer.build/DerivedSources/GeneratedAssetSymbols.swift": [1745984258, 655064521]
+  "/Users/studioone/Xe-Transfer/build/Xe-Transfer.build/Release/Xe-Transfer.build/DerivedSources/GeneratedAssetSymbols.swift": [1745987118, 240720464]

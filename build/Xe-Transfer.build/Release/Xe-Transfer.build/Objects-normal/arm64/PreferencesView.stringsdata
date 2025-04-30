@@ -1,0 +1,192 @@
+{
+  "source": "/Users/studioone/Xe-Transfer/Xe-Transfer/PreferencesView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Settings",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 17
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 21
+        }
+      },
+      {
+        "comment": "",
+        "key": "Project Details",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 36
+        }
+      },
+      {
+        "comment": "",
+        "key": "Project Name",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 41
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 45
+        }
+      },
+      {
+        "comment": "",
+        "key": "Date",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 52
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 56
+        }
+      },
+      {
+        "comment": "",
+        "key": "Crew",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 65
+        }
+      },
+      {
+        "comment": "",
+        "key": "Director",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 70
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 74
+        }
+      },
+      {
+        "comment": "",
+        "key": "Director of Photography",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 81
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 85
+        }
+      },
+      {
+        "comment": "",
+        "key": "Sound Recordist",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 92
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 96
+        }
+      },
+      {
+        "comment": "",
+        "key": "DIT",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 103
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 107
+        }
+      },
+      {
+        "comment": "",
+        "key": "Technical Settings",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 116
+        }
+      },
+      {
+        "comment": "",
+        "key": "Camera",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 121
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 125
+        }
+      },
+      {
+        "comment": "",
+        "key": "Checksum Type",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 132
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 136
+        }
+      },
+      {
+        "comment": "",
+        "key": "Matrix Overlay",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 147
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 151
+        }
+      }
+    ]
+  },
+  "version": 1
+}

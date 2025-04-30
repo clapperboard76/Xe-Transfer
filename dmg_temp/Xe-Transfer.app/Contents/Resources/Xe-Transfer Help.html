@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Xe-Transfer Help</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .note {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .tip {
+            background-color: #e8f5e9;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
+        }
+        .version {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Xe-Transfer Help Guide</h1>
+    <div class="version">Version 1.2 - March 2024</div>
+    
+    <h2>Introduction</h2>
+    <p>Xe-Transfer is a powerful file transfer application designed for efficient and secure file transfers between folders. It features checksum verification, progress tracking, and intelligent file handling to ensure your files are transferred safely and accurately.</p>
+    
+    <h2>Getting Started</h2>
+    <p>To use Xe-Transfer:</p>
+    <ol>
+        <li>Launch the application</li>
+        <li>Click "Select Source Folders" to choose one or more source folders containing the files you want to transfer</li>
+        <li>Click "Select Destination Folders" to choose one or more destination folders where you want the files to be copied</li>
+        <li>Click "Start Transfer" to begin the process</li>
+    </ol>
+    
+    <h2>Main Features</h2>
+    <ul>
+        <li><strong>Multiple Source and Destination Support:</strong> Transfer files from multiple source folders to multiple destination folders in one operation</li>
+        <li><strong>Smart File Handling:</strong> Automatically skips existing files that are identical to source files</li>
+        <li><strong>Progress Tracking:</strong> Real-time progress updates with estimated time remaining</li>
+        <li><strong>Checksum Verification:</strong> Generates checksums for all transferred files</li>
+        <li><strong>Detailed Transfer Summary:</strong> Shows number of files copied and skipped</li>
+    </ul>
+    
+    <h2>Smart File Handling</h2>
+    <p>Xe-Transfer's smart file handling system provides intelligent file management during transfers:</p>
+    <ul>
+        <li><strong>File Comparison:</strong> Before copying, the app checks if a file already exists in the destination folder</li>
+        <li><strong>Size Verification:</strong> Compares file sizes to quickly identify identical files</li>
+        <li><strong>Automatic Skipping:</strong> Files that are identical to their destination counterparts are automatically skipped</li>
+        <li><strong>Transfer Summary:</strong> Shows how many files were copied and how many were skipped</li>
+    </ul>
+    <div class="tip">
+        <strong>Tip:</strong> Smart file handling saves time by avoiding unnecessary file copies while ensuring data integrity.
+    </div>
+    
+    <h2>Checksum Verification</h2>
+    <p>Xe-Transfer supports multiple checksum algorithms for file verification:</p>
+    <ul>
+        <li><strong>SHA-256 (Recommended):</strong> The default and most secure option, providing 256-bit hash values</li>
+        <li><strong>SHA-1:</strong> A 160-bit hash algorithm, suitable for basic verification</li>
+        <li><strong>MD5:</strong> A 128-bit hash algorithm, useful for quick file comparison</li>
+    </ul>
+    <p>After each transfer, Xe-Transfer creates a checksum file in each destination folder that includes:</p>
+    <ul>
+        <li>List of all transferred files</li>
+        <li>Checksum for each file using the selected algorithm</li>
+        <li>Timestamp of the transfer</li>
+    </ul>
+    <div class="note">
+        <strong>Note:</strong> While SHA-1 and MD5 are supported for compatibility, SHA-256 is recommended for its superior security.
+    </div>
+    
+    <h2>Project Settings</h2>
+    <p>Xe-Transfer allows you to customize your transfer experience through project settings:</p>
+    <ul>
+        <li><strong>Checksum Algorithm:</strong> Choose between SHA-256, SHA-1, or MD5</li>
+        <li><strong>Transfer Mode:</strong> Configure how files are handled during transfer</li>
+    </ul>
+    <div class="tip">
+        <strong>Tip:</strong> Save your preferred settings as a project to quickly apply them to future transfers.
+    </div>
+    
+    <h2>Transfer Controls</h2>
+    <p>The transfer process includes:</p>
+    <ul>
+        <li>Progress bars showing transfer status for each destination folder</li>
+        <li>Estimated time remaining for each transfer</li>
+        <li>Ability to cancel the transfer at any time</li>
+        <li>Automatic creation of necessary subfolders</li>
+    </ul>
+    
+    <h2>Troubleshooting</h2>
+    <div class="warning">
+        <strong>Common Issues:</strong>
+        <ul>
+            <li>Insufficient disk space: Ensure you have enough free space in your destination folders</li>
+            <li>Permission issues: Make sure you have read access to source folders and write access to destination folders</li>
+            <li>File in use: Close any applications that might be using the files you want to transfer</li>
+        </ul>
+    </div>
+    
+    <h2>Support</h2>
+    <p>If you encounter any issues or have questions:</p>
+    <ul>
+        <li>Check the troubleshooting section above</li>
+        <li>Contact support at support@xenon-post.com</li>
+    </ul>
+    <p>For more information about Xe-Transfer, visit <a href="https://xenon-post.com" target="_blank">xenon-post.com</a></p>
+</body>
+</html> 

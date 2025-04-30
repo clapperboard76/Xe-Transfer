@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Xe-Transfer Help</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .note {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .tip {
+            background-color: #e8f5e9;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: "SF Mono", Monaco, Menlo, Consolas, monospace;
+        }
+        .version {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Xe-Transfer Help</h1>
+    
+    <h2>Introduction</h2>
+    <p>Xe-Transfer is a powerful file transfer application designed for efficient and secure file transfers between folders. It features checksum verification, progress tracking, and a user-friendly interface.</p>
+    
+    <h2>Getting Started</h2>
+    <p>To begin using Xe-Transfer:</p>
+    <ol>
+        <li>Launch the application</li>
+        <li>Select your source folder using the "Select Source" button</li>
+        <li>Select your destination folder using the "Select Destination" button</li>
+        <li>Choose your preferred checksum option (MD5, SHA-1, or SHA-256)</li>
+        <li>SHA-256 is the most robust checksum option, this should be optional for most users and is set by default</li>
+        <li>Click "Start Transfer" to begin the process</li>
+    </ol>
+    
+    <h2>Handling Existing Files</h2>
+    <p>When transferring files to a destination folder that already contains some of the same files, Xe-Transfer uses a smart transfer approach. The app will:</p>
+    <ul>
+        <li>Skip files that already exist in the destination folder</li>
+        <li>Only transfer new or modified files</li>
+        <li>Preserve existing files in the destination folder</li>
+        <li>Add new files to the destination without overwriting existing ones</li>
+    </ul>
+    <p>This ensures that your existing files remain intact while allowing you to add new files or update modified ones. The transfer process is safe and won't accidentally overwrite or delete files in your destination folder.</p>
+    
+    <h2>Settings</h2>
+    <p>The Settings tab allows you to configure project-specific details for your transfers. Here you can set the project name, description, and other metadata that will be included in the transfer logs. This information helps track and organize your file transfers, making it easier to manage multiple projects. The settings are saved automatically and will be used for all subsequent transfers until modified.</p>
+    
+    <h2>History</h2>
+    <p>The History tab provides a comprehensive record of all your file transfers. Each entry includes:</p>
+    <ul>
+        <li>Transfer date and time</li>
+        <li>Source and destination folders</li>
+        <li>Number of files transferred</li>
+        <li>Total transfer size</li>
+        <li>Project details (if set)</li>
+        <li>Transfer status (success/failure)</li>
+    </ul>
+    <p>You can view detailed information about past transfers, including any errors or warnings that occurred during the process. The history is automatically saved and can be used to track your transfer activities over time.</p>
+    
+    <h2>Main Features</h2>
+    <ul>
+        <li>Secure file transfer with checksum verification</li>
+        <li>Real-time progress tracking</li>
+        <li>Multiple checksum algorithm options</li>
+        <li>Automatic checksum file generation</li>
+        <li>Smart file handling for existing files</li>
+    </ul>
+    
+    <h2>Transfer Controls</h2>
+    <p>The application provides several controls for managing your transfer:</p>
+    <ul>
+        <li><strong>Start Transfer:</strong> Begins the file transfer process</li>
+        <li><strong>Pause:</strong> Pauses the current transfer operation</li>
+        <li><strong>Resume:</strong> Resumes the transfer from where it has been paused</li>
+    </ul>
+    
+    <h2>Checksum File</h2>
+    <p>After a successful transfer, Xe-Transfer creates a checksum file in the destination folder. This file:</p>
+    <ul>
+        <li>Contains the checksum values for all transferred files</li>
+        <li>Uses the format: <code>filename: checksum</code></li>
+        <li>Can be used to verify file integrity later</li>
+    </ul>
+    
+    <h2>Troubleshooting</h2>
+    <div class="warning">
+        <strong>Common Issues:</strong>
+        <ul>
+            <li>Insufficient disk space in destination folder
+                <ul>
+                    <li>Xe-Transfer will detect this before starting the transfer</li>
+                    <li>A warning popup will show the required space and available space</li>
+                    <li>You can safely cancel the transfer at this point</li>
+                </ul>
+            </li>
+            <li>Permission issues with source or destination folders
+                <ul>
+                    <li>Right-click the folder in Finder and select "Get Info"</li>
+                    <li>At the bottom of the Info window, click the lock icon to make changes</li>
+                    <li>Enter your administrator password when prompted</li>
+                    <li>Adjust the permissions to allow read/write access</li>
+                </ul>
+            </li>
+            <li>Files locked by other applications
+                <ul>
+                    <li>Close any applications that might be using the files</li>
+                    <li>Check for open documents in word processors, image editors, etc.</li>
+                    <li>If a file is locked, you'll see a warning in the transfer log</li>
+                    <li>You can retry the transfer after closing the applications</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tip">
+        <strong>Tips:</strong>
+        <ul>
+            <li>Ensure you have enough free space before starting a transfer</li>
+            <li>Check folder permissions if you encounter access issues</li>
+            <li>Close any applications that might be using the files</li>
+        </ul>
+    </div>
+    
+    <h2>Understanding File Size Differences</h2>
+    <p>When comparing the total size of files in the source and destination folders, you may notice slight differences. This is normal and occurs because:</p>
+    <ul>
+        <li>Empty folders are not transferred to the destination</li>
+        <li>A checksum file (Xe-Transfer Checksums.txt) is created in the destination folder</li>
+        <li>The checksum file contains hash values for all transferred files</li>
+    </ul>
+    <p>These differences are expected and don't indicate any problems with the transfer. The checksum file is essential for verifying file integrity, and empty folders are excluded to maintain efficiency in the transfer process.</p>
+    
+    <h2>Support</h2>
+    <p>For more information about Xe-Transfer, visit <a href="https://xenon-post.com/apps" target="_blank">xenon-post.com</a></p>
+    
+    <div class="version">
+        <p>Version 1.3 - March 2024</p>
+    </div>
+</body>
+</html> 

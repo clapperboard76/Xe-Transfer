@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>colors</key>
+	<array/>
+	<key>images</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/studioone/Xe-Transfer/Xe-Transfer/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameAppLogo</string>
+			<key>relativePath</key>
+			<string>./AppLogo.imageset</string>
+			<key>swiftSymbol</key>
+			<string>appLogo</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/studioone/Xe-Transfer/Xe-Transfer/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameDestinationIcon</string>
+			<key>relativePath</key>
+			<string>./DestinationIcon.imageset</string>
+			<key>swiftSymbol</key>
+			<string>destinationIcon</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/studioone/Xe-Transfer/Xe-Transfer/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameDestinationIconHover</string>
+			<key>relativePath</key>
+			<string>./DestinationIconHover.imageset</string>
+			<key>swiftSymbol</key>
+			<string>destinationIconHover</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/studioone/Xe-Transfer/Xe-Transfer/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameSourceIcon</string>
+			<key>relativePath</key>
+			<string>./SourceIcon.imageset</string>
+			<key>swiftSymbol</key>
+			<string>sourceIcon</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/studioone/Xe-Transfer/Xe-Transfer/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameSourceIconHover</string>
+			<key>relativePath</key>
+			<string>./SourceIconHover.imageset</string>
+			<key>swiftSymbol</key>
+			<string>sourceIconHover</string>
+		</dict>
+	</array>
+	<key>symbols</key>
+	<array/>
+</dict>
+</plist>

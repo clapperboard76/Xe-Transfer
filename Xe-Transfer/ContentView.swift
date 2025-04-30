@@ -2,6 +2,7 @@ import SwiftUI
 import CryptoKit
 import Security
 import ServiceManagement
+import UniformTypeIdentifiers
 
 extension Array {
     subscript(safe index: Index) -> Element? {
@@ -76,6 +77,7 @@ struct SourceFolderSection: View {
     @State private var driveToEject: URL? = nil
     @State private var showErrorAlert: Bool = false
     @State private var errorMessage: String = ""
+    @State private var isTargeted: Bool = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -117,6 +119,10 @@ struct SourceFolderSection: View {
                         isHoveringSource = hovering
                     }
                     .accessibilityLabel("Select source folder \(index + 1)")
+                    .onDrop(of: [.fileURL], isTargeted: $isTargeted) { providers in
+                        handleSourceDrop(providers: providers, index: index)
+                        return true
+                    }
                     
                     if let folder = sourceFolders[safe: index], let folderPath = folder?.path {
                         Text(folderPath)
@@ -125,10 +131,17 @@ struct SourceFolderSection: View {
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
-                        Text("Select source")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Button(action: { selectSourceFolder(index: index) }) {
+                            Text("Select Source")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .onDrop(of: [.fileURL], isTargeted: $isTargeted) { providers in
+                            handleSourceDrop(providers: providers, index: index)
+                            return true
+                        }
                     }
                     
                     HStack(spacing: 5) {
@@ -223,6 +236,28 @@ struct SourceFolderSection: View {
             sourceFolders.remove(at: index)
         }
     }
+    
+    private func handleSourceDrop(providers: [NSItemProvider], index: Int) {
+        for provider in providers {
+            if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
+                provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (data, error) in
+                    if let data = data as? Data,
+                       let urlString = String(data: data, encoding: .utf8),
+                       let url = URL(string: urlString) {
+                        DispatchQueue.main.async {
+                            var isDirectory: ObjCBool = false
+                            if FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) && isDirectory.boolValue {
+                                while sourceFolders.count <= index {
+                                    sourceFolders.append(nil)
+                                }
+                                sourceFolders[index] = url
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 struct DestinationFolderSection: View {
@@ -236,6 +271,7 @@ struct DestinationFolderSection: View {
     @State private var driveToEject: URL? = nil
     @State private var showErrorAlert: Bool = false
     @State private var errorMessage: String = ""
+    @State private var isTargeted: Bool = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -263,45 +299,58 @@ struct DestinationFolderSection: View {
             }
             
             ForEach(0..<destinationFolders.count, id: \.self) { index in
-                HStack {
-                    Button(action: { selectDestinationFolder(index: index) }) {
-                        if destinationFolders.indices.contains(index) && destinationFolders[index].path != "/" {
-                            Image(nsImage: NSWorkspace.shared.icon(forFile: destinationFolders[index].path))
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
-                        } else {
-                            Image(isHoveringDestination ? "DestinationIconHover" : "DestinationIcon")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.green)
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Button(action: { selectDestinationFolder(index: index) }) {
+                            if destinationFolders.indices.contains(index) && destinationFolders[index].path != "/" {
+                                Image(nsImage: NSWorkspace.shared.icon(forFile: destinationFolders[index].path))
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                            } else {
+                                Image(isHoveringDestination ? "DestinationIconHover" : "DestinationIcon")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.green)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .onHover { hovering in
+                            isHoveringDestination = hovering
+                        }
+                        .accessibilityLabel("Select destination folder \(index + 1)")
+                        .onDrop(of: [.fileURL], isTargeted: $isTargeted) { providers in
+                            handleDestinationDrop(providers: providers, index: index)
+                            return true
                         }
                     }
-                    .buttonStyle(PlainButtonStyle())
-                    .onHover { hovering in
-                        isHoveringDestination = hovering
-                    }
-                    .accessibilityLabel("Select destination folder \(index + 1)")
                     
                     VStack(alignment: .leading, spacing: 10) {
-                        if destinationFolders.indices.contains(index) {
+                        if destinationFolders.indices.contains(index) && destinationFolders[index].path != "/" {
                             Text(destinationFolders[index].path)
                                 .font(.caption)
                                 .foregroundColor(.gray)
                                 .lineLimit(1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         } else {
-                            Text("Folder not set")
-                                .font(.caption)
-                                .foregroundColor(.red)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Button(action: { selectDestinationFolder(index: index) }) {
+                                Text("Select Destination")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .onDrop(of: [.fileURL], isTargeted: $isTargeted) { providers in
+                                handleDestinationDrop(providers: providers, index: index)
+                                return true
+                            }
                         }
                         
-                        let minutes = Int((estimatedTimeForFolder[safe: index] ?? 0.0) / 60)
-                        let seconds = Int((estimatedTimeForFolder[safe: index] ?? 0.0).truncatingRemainder(dividingBy: 60))
-                        
                         if destinationFolders.indices.contains(index) && destinationFolders[index].path != "/" {
+                            let minutes = Int((estimatedTimeForFolder[safe: index] ?? 0.0) / 60)
+                            let seconds = Int((estimatedTimeForFolder[safe: index] ?? 0.0).truncatingRemainder(dividingBy: 60))
+                            
                             Text("Estimated Time: \(minutes)m \(seconds)s")
                                 .font(.caption)
                                 .foregroundColor(.gray)
@@ -447,6 +496,31 @@ struct DestinationFolderSection: View {
     private func resumeTransfer(at index: Int) {
         if index < isPaused.count {
             isPaused[index] = false
+        }
+    }
+    
+    private func handleDestinationDrop(providers: [NSItemProvider], index: Int) {
+        for provider in providers {
+            if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
+                provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (data, error) in
+                    if let data = data as? Data,
+                       let urlString = String(data: data, encoding: .utf8),
+                       let url = URL(string: urlString) {
+                        DispatchQueue.main.async {
+                            var isDirectory: ObjCBool = false
+                            if FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) && isDirectory.boolValue {
+                                while destinationFolders.count <= index {
+                                    destinationFolders.append(URL(fileURLWithPath: "/"))
+                                    destinationProgress.append(0.0)
+                                    dataRemainingForFolder.append(0.0)
+                                    estimatedTimeForFolder.append(0.0)
+                                }
+                                destinationFolders[index] = url
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -627,12 +701,6 @@ struct ContentView: View {
                 .disabled(isTransferring)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
-                
-                // URL Link
-                Link("xenon-post.com", destination: URL(string: "https://www.xenon-post.com/apps")!)
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundColor(.gray)
-                    .padding()
             }
             .frame(maxWidth: .infinity)
             

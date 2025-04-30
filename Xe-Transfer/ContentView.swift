@@ -612,7 +612,55 @@ struct ContentView: View {
     @State private var isHoveringDestination: Bool = false
     @State private var showPreferences: Bool = false
     @State private var showHistory: Bool = false
+    @State private var showSpeedTest: Bool = false
     @State private var isPaused: [Bool] = []
+    @State private var skippedFiles: Int = 0
+    @State private var bytesTransferred: Int64 = 0
+    @State private var currentFile: String = ""
+    @State private var transferSpeed: Double = 0.0
+    @State private var startTime: Date?
+    
+    private let fileManager = FileManager.default
+    private let defaultOperationTimeout: TimeInterval = 60 // 1 minute default timeout
+    private let largeFileOperationTimeout: TimeInterval = 1800 // 30 minutes for large files
+    
+    private enum FileTransferError: Error {
+        case operationTimeout
+        case fileOperationFailed(Error)
+    }
+    
+    private func updateTransferSpeed() {
+        // Calculate transfer speed based on bytes transferred and time elapsed
+        if let startTime = startTime {
+            let currentTime = Date()
+            let timeElapsed = currentTime.timeIntervalSince(startTime)
+            if timeElapsed > 0 {
+                transferSpeed = Double(bytesTransferred) / timeElapsed / 1_000_000 // Convert to MB/s
+            }
+        }
+    }
+    
+    private func fetchAllFiles(in directoryURL: URL) -> [URL] {
+        var fileURLs: [URL] = []
+        let options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles]
+        
+        if let enumerator = FileManager.default.enumerator(at: directoryURL, includingPropertiesForKeys: [.fileSizeKey], options: options) {
+            while let fileURL = enumerator.nextObject() as? URL {
+                var isDirectory: ObjCBool = false
+                if FileManager.default.fileExists(atPath: fileURL.path, isDirectory: &isDirectory) {
+                    if !isDirectory.boolValue {
+                        Swift.print("Found file: \(fileURL.path)")
+                        fileURLs.append(fileURL)
+                    } else {
+                        Swift.print("Found directory: \(fileURL.path)")
+                    }
+                }
+            }
+        }
+        
+        Swift.print("Total files found: \(fileURLs.count)")
+        return fileURLs
+    }
     
     var body: some View {
         ZStack {
@@ -628,6 +676,16 @@ struct ContentView: View {
                     Spacer()
                     
                     HStack(spacing: 20) {
+                        Button(action: { showSpeedTest = true }) {
+                            Image(systemName: "gauge")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 14, height: 14)
+                                .foregroundColor(.gray)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .help("Run Speed Test")
+                        
                         Button(action: { showHistory = true }) {
                             Image(systemName: "clock.fill")
                                 .resizable()
@@ -700,7 +758,7 @@ struct ContentView: View {
                 .buttonStyle(.borderedProminent)
                 .disabled(isTransferring)
                 .padding(.horizontal, 20)
-                .padding(.vertical, 10)
+                .padding(.vertical, 20)
             }
             .frame(maxWidth: .infinity)
             
@@ -718,44 +776,190 @@ struct ContentView: View {
         .sheet(isPresented: $showHistory) {
             TransferHistoryView(history: transferHistory)
         }
+        .sheet(isPresented: $showSpeedTest) {
+            SpeedTestView(sourceFolders: sourceFolders, destinationFolders: destinationFolders)
+        }
     }
     
-    // MARK: - Fetch and Transfer Files
-    private func fetchAllFiles(in directoryURL: URL) -> [URL] {
-        var fileURLs: [URL] = []
-        let options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles]
+    private func performWithTimeout<T>(_ operation: @escaping () async throws -> T, timeout: TimeInterval? = nil) async throws -> T {
+        let semaphore = DispatchSemaphore(value: 0)
+        var result: Result<T, Error>?
+        let operationTimeout = timeout ?? defaultOperationTimeout
         
-        if let enumerator = FileManager.default.enumerator(at: directoryURL, includingPropertiesForKeys: [.fileSizeKey], options: options) {
-            while let fileURL = enumerator.nextObject() as? URL {
-                var isDirectory: ObjCBool = false
-                if FileManager.default.fileExists(atPath: fileURL.path, isDirectory: &isDirectory) {
-                    if !isDirectory.boolValue {
-                        Swift.print("Found file: \(fileURL.path)")
-                        fileURLs.append(fileURL)
-                    } else {
-                        Swift.print("Found directory: \(fileURL.path)")
-                    }
+        Task {
+            do {
+                let value = try await operation()
+                result = .success(value)
+            } catch {
+                result = .failure(error)
+            }
+            semaphore.signal()
+        }
+        
+        if semaphore.wait(timeout: .now() + operationTimeout) == .timedOut {
+            throw FileTransferError.operationTimeout
+        }
+        
+        switch result {
+        case .success(let value):
+            return value
+        case .failure(let error):
+            throw FileTransferError.fileOperationFailed(error)
+        case .none:
+            throw FileTransferError.fileOperationFailed(NSError(domain: "FileTransferManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error occurred"]))
+        }
+    }
+    
+    private func copyFileWithTimeout(from source: URL, to destination: URL) async throws {
+        try await performWithTimeout {
+            try await self.copyFile(from: source, to: destination)
+        }
+    }
+    
+    private func createDirectoryWithTimeout(at url: URL) async throws {
+        try await performWithTimeout {
+            try self.fileManager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+        }
+    }
+    
+    private func fileExistsWithTimeout(at path: String) async throws -> Bool {
+        try await performWithTimeout {
+            self.fileManager.fileExists(atPath: path)
+        }
+    }
+    
+    private func copyFileAndCalculateChecksum(from source: URL, to destination: URL) async throws -> String {
+        do {
+            // Get file size for timeout determination
+            let fileSize = try attributesWithTimeout(at: source.path)[.size] as? Int64 ?? 0
+            let timeout = getTimeoutForFile(size: fileSize)
+            
+            // Update current file name for progress tracking
+            await MainActor.run {
+                self.currentFile = source.lastPathComponent
+            }
+            
+            // Copy file with timeout and progress tracking
+            try await performWithTimeout({
+                try await self.copyFile(from: source, to: destination)
+            }, timeout: timeout)
+            
+            // Calculate checksum with timeout
+            return try await performWithTimeout({
+                try await self.computeChecksum(for: destination)
+            }, timeout: timeout)
+        } catch {
+            handleTransferError(error, for: source.lastPathComponent)
+            throw error
+        }
+    }
+    
+    private func getTimeoutForFile(size: Int64) -> TimeInterval {
+        // Use longer timeout for files larger than 500MB
+        return size > 500 * 1024 * 1024 ? largeFileOperationTimeout : defaultOperationTimeout
+    }
+    
+    private func attributesWithTimeout(at path: String) throws -> [FileAttributeKey: Any] {
+        try fileManager.attributesOfItem(atPath: path)
+    }
+    
+    private func handleTransferError(_ error: Error, for file: String) {
+        DispatchQueue.main.async {
+            let errorMessage: String
+            switch error {
+            case FileTransferError.operationTimeout:
+                errorMessage = "Operation timed out while processing '\(file)'. The drive might be slow or unresponsive."
+            case FileTransferError.fileOperationFailed(let underlyingError):
+                errorMessage = "Failed to process '\(file)': \(underlyingError.localizedDescription)"
+            default:
+                errorMessage = "An unexpected error occurred while processing '\(file)': \(error.localizedDescription)"
+            }
+            
+            let alert = NSAlert()
+            alert.messageText = "Transfer Error"
+            alert.informativeText = errorMessage
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+        }
+    }
+    
+    private func copyFile(from sourceURL: URL, to destinationURL: URL) throws {
+        let fileManager = FileManager.default
+        let fileSize = try sourceURL.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
+        
+        // Create destination directory if it doesn't exist
+        try fileManager.createDirectory(at: destinationURL.deletingLastPathComponent(),
+                                      withIntermediateDirectories: true)
+        
+        // Check if file exists and compare sizes
+        if fileManager.fileExists(atPath: destinationURL.path) {
+            if let destSize = try? destinationURL.resourceValues(forKeys: [.fileSizeKey]).fileSize,
+               destSize == fileSize {
+                skippedFiles += 1
+                return
+            }
+        }
+        
+        // Copy file with progress tracking
+        let source = try FileHandle(forReadingFrom: sourceURL)
+        let destination = try FileHandle(forWritingTo: destinationURL)
+        
+        defer {
+            try? source.close()
+            try? destination.close()
+        }
+        
+        let bufferSize = 8 * 1024 * 1024  // 8MB buffer for better performance
+        var bytesRead: Int64 = 0
+        
+        // Use autoreleasepool to manage memory during large file transfers
+        try autoreleasepool {
+            while let chunk = try? source.read(upToCount: bufferSize), !chunk.isEmpty {
+                try destination.write(contentsOf: chunk)
+                bytesRead += Int64(chunk.count)
+                
+                // Update progress on main thread
+                DispatchQueue.main.async {
+                    self.bytesTransferred += Int64(chunk.count)
+                    self.transferProgress = Double(bytesRead) / Double(fileSize)
+                    self.updateTransferSpeed()
+                }
+                
+                // Add a small delay for very large files to prevent memory buildup
+                if fileSize > 1024 * 1024 * 1024 { // If file is larger than 1GB
+                    Thread.sleep(forTimeInterval: 0.0001) // 0.1ms delay
                 }
             }
         }
         
-        Swift.print("Total files found: \(fileURLs.count)")
-        return fileURLs
+        // Ensure all data is written to disk
+        try destination.synchronize()
     }
     
     private func computeChecksum(for fileURL: URL) throws -> String {
-        let fileData = try Data(contentsOf: fileURL)
+        let fileSize = try fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
+        let bufferSize = 8 * 1024 * 1024  // 8MB buffer
         
-        switch settings.selectedChecksumType {
-        case .sha256:
-            let hash = SHA256.hash(data: fileData)
-            return hash.map { String(format: "%02hhx", $0) }.joined()
-        case .md5:
-            let hash = Insecure.MD5.hash(data: fileData)
-            return hash.map { String(format: "%02hhx", $0) }.joined()
-        case .sha1:
-            let hash = Insecure.SHA1.hash(data: fileData)
-            return hash.map { String(format: "%02hhx", $0) }.joined()
+        return try autoreleasepool {
+            let fileHandle = try FileHandle(forReadingFrom: fileURL)
+            defer { try? fileHandle.close() }
+            
+            var hasher = SHA256()
+            var bytesRead: Int64 = 0
+            
+            while let chunk = try? fileHandle.read(upToCount: bufferSize), !chunk.isEmpty {
+                hasher.update(data: chunk)
+                bytesRead += Int64(chunk.count)
+                
+                // Add a small delay for very large files
+                if fileSize > 1024 * 1024 * 1024 { // If file is larger than 1GB
+                    Thread.sleep(forTimeInterval: 0.0001) // 0.1ms delay
+                }
+            }
+            
+            let digest = hasher.finalize()
+            return digest.map { String(format: "%02x", $0) }.joined()
         }
     }
     
@@ -855,7 +1059,7 @@ struct ContentView: View {
     private func startTransfer() {
         Swift.print("Starting transfer...")
         isTransferring = true
-        let startTime = Date()
+        startTime = Date()
         
         // Reset progress arrays and control states
         destinationProgress = Array(repeating: 0.0, count: destinationFolders.count)
@@ -1081,7 +1285,7 @@ struct ContentView: View {
                                             }
                                             
                                             // Copy the file
-                                    try FileManager.default.copyItem(at: sourceFile, to: destinationFile)
+                                    try await self.copyFile(from: sourceFile, to: destinationFile)
                                             
                                             // Verify the file was actually copied
                                     if !FileManager.default.fileExists(atPath: destinationFile.path) {
@@ -1105,7 +1309,7 @@ struct ContentView: View {
                                             }
                                             
                                             // Compute checksum
-                                    let checksum = try self.computeChecksum(for: sourceFile)
+                                    let checksum = try await self.computeChecksum(for: sourceFile)
                                             
                                             // Append checksum to checksum file
                                             let checksumText = "\(relativePath): \(checksum) - Transfer Success\n"
@@ -1151,29 +1355,31 @@ struct ContentView: View {
                         
                         if successfulTransfers > 0 {
                             // Create and add transfer record only for successful destinations
-                            let duration = Date().timeIntervalSince(startTime)
-                            let record = TransferRecord(
-                                id: UUID(),
-                                timestamp: Date(),
-                                sourceFolders: self.sourceFolders.compactMap { $0?.path },
-                                destinationFolders: self.destinationFolders.enumerated().compactMap { index, folder in
-                                    self.destinationProgress[index] >= 0.9 ? folder.path : nil
-                                },
-                                totalSize: totalSizes.enumerated().reduce(0) { sum, index in
-                                    self.destinationProgress[index.offset] >= 0.9 ? sum + index.element : sum
-                                },
-                                duration: duration,
-                                projectName: settings.projectName,
-                                date: settings.date,
-                                director: settings.director,
-                                dop: settings.dop,
-                                soundRecordist: settings.soundRecordist,
-                                dit: settings.dit,
-                                camera: settings.camera,
-                                checksumType: settings.selectedChecksumType.rawValue,
-                                checksumFile: "checksum_\(Date().formatted(date: .complete, time: .standard)).txt"
-                            )
-                            self.transferHistory.addRecord(record)
+                            if let startTime = self.startTime {
+                                let duration = Date().timeIntervalSince(startTime)
+                                let record = TransferRecord(
+                                    id: UUID(),
+                                    timestamp: Date(),
+                                    sourceFolders: self.sourceFolders.compactMap { $0?.path },
+                                    destinationFolders: self.destinationFolders.enumerated().compactMap { index, folder in
+                                        self.destinationProgress[index] >= 0.9 ? folder.path : nil
+                                    },
+                                    totalSize: totalSizes.enumerated().reduce(0) { sum, index in
+                                        self.destinationProgress[index.offset] >= 0.9 ? sum + index.element : sum
+                                    },
+                                    duration: duration,
+                                    projectName: settings.projectName,
+                                    date: settings.date,
+                                    director: settings.director,
+                                    dop: settings.dop,
+                                    soundRecordist: settings.soundRecordist,
+                                    dit: settings.dit,
+                                    camera: settings.camera,
+                                    checksumType: settings.selectedChecksumType.rawValue,
+                                    checksumFile: "checksum_\(Date().formatted(date: .complete, time: .standard)).txt"
+                                )
+                                self.transferHistory.addRecord(record)
+                            }
                             
                             self.showCompletionAlert()
                             Swift.print("Transfer completed successfully for \(successfulTransfers) destination(s).")
